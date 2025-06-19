@@ -2,120 +2,88 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>WePlay 修仙系統</title>
+  <title>WePlay 修仙輔助工具</title>
   <style>
     body {
-      font-family: "微軟正黑體", sans-serif;
-      background: linear-gradient(#f0f8ff, #e0ffff);
-      text-align: center;
-      padding: 30px;
+      font-family: sans-serif;
+      background: #fdf6e3;
+      padding: 20px;
     }
     h1 {
-      color: #8b0000;
+      text-align: center;
+    }
+    .section {
+      margin-bottom: 30px;
+      padding: 15px;
+      background: #fffbe6;
+      border: 1px solid #ddd;
+      border-radius: 10px;
     }
     button {
-      padding: 10px 20px;
-      margin: 10px;
-      font-size: 18px;
-    }
-    #log {
-      margin-top: 20px;
-      white-space: pre-line;
+      padding: 10px;
+      margin-top: 10px;
       font-size: 16px;
-      background: #fff;
-      border: 1px solid #aaa;
-      padding: 15px;
-      width: 80%;
-      margin-left: auto;
-      margin-right: auto;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #1e5f5f;
     }
   </style>
 </head>
 <body>
+  <h1>🧙 WePlay 修仙輔助工具</h1>
 
-  <h1>✨ WePlay 修仙系統 ✨</h1>
+  <div class="section">
+    <h2>🔮 法寶生成器</h2>
+    <button onclick="generateArtifact()">生成法寶</button>
+    <div class="result" id="artifactResult"></div>
+  </div>
 
-  <p id="status">載入中...</p>
+  <div class="section">
+    <h2>💊 丹藥製作指南</h2>
+    <button onclick="getPillGuide()">查看丹藥</button>
+    <div class="result" id="pillResult"></div>
+  </div>
 
-  <button onclick="cultivate()">🔮 修煉</button>
-  <button onclick="usePill()">💊 使用丹藥</button>
-  <button onclick="showStatus()">📜 查看狀態</button>
+  <div class="section">
+    <h2>🏯 門派建議器</h2>
+    <button onclick="suggestSect()">推薦門派</button>
+    <div class="result" id="sectResult"></div>
+  </div>
 
-  <div id="log"></div>
+  <div class="section">
+    <h2>🦄 靈獸夥伴推薦</h2>
+    <button onclick="suggestPet()">召喚靈獸</button>
+    <div class="result" id="petResult"></div>
+  </div>
 
   <script>
-    // 初始資料
-    const player = {
-      name: "道友",
-      sect: "蜀山",
-      spiritualRoot: "火靈根",
-      realmIndex: 0,
-      exp: 0,
-      realms: ["練氣", "築基", "結丹", "元嬰", "化神", "大乘", "飛升"],
-      pills: 3,
-      artifactBonus: 0.2,
-      beastBonus: 0.1,
-      sectBonus: 0.15
-    };
+    const artifacts = ["混元神劍", "九天雷珠", "紫炎火瓶", "玄冰天玉", "靈風扇"];
+    const pills = ["養氣丹：增加靈力", "聚神丹：提高修練速度", "破障丹：突破瓶頸", "金骨丹：強化體魄"];
+    const sects = ["天劍宗", "幽冥谷", "煉火門", "碧落宮", "萬妖山"];
+    const pets = ["靈狐", "青龍", "白虎", "冰凰", "雷豹"];
 
-    function cultivate() {
-      const base = Math.floor(Math.random() * 30) + 20;
-      const bonus = 1 + player.artifactBonus + player.beastBonus + player.sectBonus;
-      const totalExp = Math.floor(base * bonus);
-      player.exp += totalExp;
-
-      let msg = `你修煉獲得了 ${totalExp} 修為（加成後）！`;
-
-      if (player.exp >= 100) {
-        player.exp = 0;
-        if (player.realmIndex < player.realms.length - 1) {
-          player.realmIndex++;
-          msg += `\n🎉 恭喜突破到【${player.realms[player.realmIndex]}】！`;
-        } else {
-          msg += `\n🌟 你已達最高境界【${player.realms[player.realmIndex]}】！`;
-        }
-      }
-
-      log(msg);
-      updateStatus();
+    function getRandom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
     }
 
-    function usePill() {
-      if (player.pills > 0) {
-        player.exp += 40;
-        player.pills--;
-        log("💊 使用丹藥，修為增加 40！");
-        updateStatus();
-      } else {
-        log("❌ 你沒有丹藥了！");
-      }
+    function generateArtifact() {
+      document.getElementById("artifactResult").textContent = getRandom(artifacts);
     }
 
-    function showStatus() {
-      const status = 
-        👤 名稱：${player.name}\n +
-        🛕 門派：${player.sect}（修煉加成 +15%）\n +
-        🌱 靈根：${player.spiritualRoot}\n +
-        🔮 境界：${player.realms[player.realmIndex]}\n +
-        📈 修為：${player.exp}/100\n +
-        💎 法寶加成：+${Math.floor(player.artifactBonus * 100)}%\n +
-        🐉 靈獸加成：+${Math.floor(player.beastBonus * 100)}%\n +
-        `💊 丹藥數量：${player.pills}`;
-      log(status);
+    function getPillGuide() {
+      document.getElementById("pillResult").textContent = getRandom(pills);
     }
 
-    function log(text) {
-      document.getElementById("log").textContent = text;
+    function suggestSect() {
+      document.getElementById("sectResult").textContent = getRandom(sects);
     }
 
-    function updateStatus() {
-      document.getElementById("status").textContent =
-        `【${player.name}｜${player.realms[player.realmIndex]}】 修為 ${player.exp}/100`;
+    function suggestPet() {
+      document.getElementById("petResult").textContent = getRandom(pets);
     }
-
-    // 初始狀態
-    updateStatus();
   </script>
-
 </body>
 </html>
